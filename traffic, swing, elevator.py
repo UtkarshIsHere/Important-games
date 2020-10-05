@@ -1,7 +1,6 @@
 #!/usr/bin/env micropython
 from ev3dev2.motor import LargeMotor, OUTPUT_B, OUTPUT_D, OUTPUT_C, SpeedPercent, MoveTank, MoveSteering
-from ev3dev2.sound import Sound
-from ev3dev2.sensor.lego import GyroSensor, ColorSensor
+from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor import INPUT_2, INPUT_3
 from time import sleep
 import sys
@@ -18,9 +17,6 @@ arm = LargeMotor(OUTPUT_D)
 steering_tank = MoveSteering(OUTPUT_C, OUTPUT_B)
 tank = MoveTank(OUTPUT_C, OUTPUT_B)
 gyro = GyroSensor(INPUT_2)
-color = ColorSensor(INPUT_3)
-color.mode='COL-COLOR'
-colors=('unknown','black','blue','green','yellow','red','white','brown') #To get the direct colour use: colors[color.value()]
 
 def slowDown(leftSpeedSlowDown, rightSpeedSlowDown):
     unifiedSpeed = 50
@@ -45,7 +41,7 @@ def speedUp(leftSpeedAcceleration, rightSpeedAcceleration):
 def gyroCalibrate():
 
     if gyro.angle >= backwardBias and gyro.angle <= forwardBias:
-        print("Seems to be there")
+        return
     elif gyro.angle < backwardBias:
         while gyro.angle < backwardBias:
             steering_tank.on_for_degrees(100, SpeedPercent(100), 1)
@@ -62,7 +58,6 @@ def gyroReset():
 
 
 def actuallyRunTheCode():
-    print("Aint no end of function")
     gyroReset()
 
     leftSpeed = 70
@@ -102,8 +97,6 @@ def actuallyRunTheCode():
     sleep(15)
 
     tank.off()
-
-
 
 
 actuallyRunTheCode()

@@ -13,9 +13,6 @@ arm = LargeMotor(OUTPUT_D)
 tank = MoveTank(OUTPUT_C, OUTPUT_B)
 steering_tank = MoveSteering(OUTPUT_C, OUTPUT_B)
 gyro = GyroSensor(INPUT_2)
-color = ColorSensor(INPUT_3)
-color.mode='COL-COLOR'
-colors=('unknown','black','blue','green','yellow','red','white','brown') #To get the direct colour use: colors[color.value()]
 
 def slowDown(leftSpeedSlowDown, rightSpeedSlowDown):
     unifiedSpeed = 50
@@ -32,8 +29,8 @@ def slowDown(leftSpeedSlowDown, rightSpeedSlowDown):
 def speedUp(leftSpeedAcceleration, rightSpeedAcceleration):
      targetSpeed = 70
      while leftSpeedAcceleration < targetSpeed:
-         leftSpeedAcceleration += 6.25
-         rightSpeedAcceleration += 6.25
+         leftSpeedAcceleration += 6.5
+         rightSpeedAcceleration += 6.5
          tank.on_for_seconds(leftSpeedAcceleration, rightSpeedAcceleration, 0.05, brake=False)
 
 
@@ -73,7 +70,7 @@ def tree():
 
 
     speedUp(leftSpeedAcceleration, rightSpeedAcceleration)
-    tank.on_for_seconds(leftSpeed, rightSpeed, 0.825, brake=False)
+    tank.on_for_seconds(leftSpeed, rightSpeed, 0.925, brake=True)
     
     slowDown(leftSpeed, rightSpeed)
     gyroCalibrate()
@@ -82,10 +79,10 @@ def tree():
     
     sleep(1)
     
-    tank.on_for_seconds(-100, -100, 0.775, brake=True, block=True)
+    tank.on_for_seconds(-100, -100, 0.775, brake=False, block=False)
     arm.on_for_rotations(SpeedPercent(-100), 150)
 
-    steering_tank.on_for_degrees(100, SpeedPercent(25), 120 , brake=True)
+    steering_tank.on_for_degrees(100, SpeedPercent(30), 100 , brake=False)
 
     tank.on(-100, -100)
 
